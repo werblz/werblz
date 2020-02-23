@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using UnityEngine;
+
+public class SpriteRadialFiller : MonoBehaviour {
+
+  [SerializeField]
+  float amount = 1.0f;
+
+  private Image image = null;
+
+	// Use this for initialization
+	void Start () {
+
+
+    image = GetComponent<Image>();
+
+    image.fillAmount = 0.35f;
+  }
+	
+	// Update is called once per frame
+	void Update () {
+
+
+    image.fillAmount = amount ;
+  }
+}

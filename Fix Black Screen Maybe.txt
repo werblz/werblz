@@ -1,0 +1,35 @@
+NOT SURE THIS FIXES THE WHOLE COMPUTER GOING BLACK. Try anyway?
+
+
+In one explorer window, go to:
+C:\Program Files\Unity\Editor\Data\Resources\Packages
+
+In second explorer window, go to:
+C:\Users\[your user]\AppData\Roaming\Unity\Packages
+
+From A, copy to B:
+
+unityeditor-cloud-hub.0.0.13.tgz
+unityeditor-cloud-home.0.1.35.tgz
+
+In B:
+
+New folder: unityeditor-cloud-hub
+
+Extract unityeditor-cloud-hub.0.1.13.tgz here
+
+Copy contents of new "packages" folder into unityeditor-cloud-hub dir
+
+Delete "packages" folder
+
+New folder: unity-editor-home
+
+Extract unityeditor-cloud-home.0.1.35.tgz here
+
+Copy contents of new "packages" folder into unity-editor-home dir
+
+Delete "packages" folder
+
+New folder: node_modules
+
+Drag the two new folders there
