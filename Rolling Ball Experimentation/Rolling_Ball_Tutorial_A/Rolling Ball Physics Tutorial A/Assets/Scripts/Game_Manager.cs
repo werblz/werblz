@@ -24,6 +24,11 @@ public class Game_Manager : MonoBehaviour {
     [SerializeField]
     private Taxi_Controller taxi = null;
 
+    [SerializeField]
+    private Airship_Mover airShipObject = null;
+
+    private Airship_Mover[] airShip = null;
+
     [Header("City Setup")]
     [SerializeField]
     public int numPads = 10;
@@ -56,6 +61,15 @@ public class Game_Manager : MonoBehaviour {
     private float gasPadScale = 5.0f;
     [SerializeField]
     private float landingPadScale = 10.0f;
+    [SerializeField]
+    private int numAirships = 10;
+    [SerializeField]
+    private float airshipRadius = 250.0f;
+
+    
+    // NEXT^^^ Control how many airships are instantiated
+    // and when, and set them flying, each with a different anim speed. I may have to also
+    // build into each animator a start delay so they don't all come in at once
 
 
 
@@ -155,6 +169,8 @@ public class Game_Manager : MonoBehaviour {
 
     private float gridCellSize = 0.0f; // Will be the size of each building cell
 
+    private float tallestBuilding = 0.0f;
+
     [Header("Game Behavior")]
     [SerializeField]
     public bool uiIsUp = false; // This is for when I put up a UI panel. I need my non-UI update loops to just RETURN so I can perform UI panel work
@@ -239,6 +255,7 @@ public class Game_Manager : MonoBehaviour {
         PopulatePads(numPads);
         PopulateGasStations(numStations);
         PopulateHomeBase();
+        PopulateAirships(numAirships);
 
 
         RefreshScore();
@@ -356,14 +373,22 @@ public class Game_Manager : MonoBehaviour {
                     // Turn on building
                     buildings[numBuildingsInGrid].SetActive(true);
 
+                    // THIS WILL FIND THE TALLEST BUILDING
+                    // Find the height (scale) of this building.
+                    float heightCheck = buildings[numBuildingsInGrid].transform.localScale.y;
 
-
+                    // If it is taller than any before, record that height
+                    if (heightCheck > tallestBuilding)
+                    {
+                        tallestBuilding = heightCheck;
+                    }
                     numBuildingsInGrid++; // Increase array index
                 }
             }
         }
+        Debug.Log("<color=blue*******************</color> HEIGHT IS " + tallestBuilding);
         Debug.Log("<color=yellow>********************</color>  NUMBER OF BUILDINGS MADE: " + numBuildingsInGrid);
-        Debug.Log("<color=red>******************* Coordinates of the middle-most building:</color>" + buildings[(int)numBuildingsInGrid / 2].transform.position);
+        //Debug.Log("<color=red>******************* Coordinates of the middle-most building:</color>" + buildings[(int)numBuildingsInGrid / 2].transform.position);
     }
 
     // This is slightly non-standard. I pass a Vector3 for the location of the building, and this method finds the pixel at the corresponding
@@ -729,7 +754,7 @@ public class Game_Manager : MonoBehaviour {
             float tmpScale = buildings[randBuild].transform.localScale.x / 2.0f;
             Vector3 stationScale = new Vector3(tmpScale, tmpScale, tmpScale); // THIS IS POINTLESS NOW. I AM NOW SCALING THE BUILDING TO THE GAS PAD SCALE FOR THIS SHIFT
             stationScale = new Vector3(gasPadScale * 2.0f, buildings[randBuild].transform.localScale.y, gasPadScale * 2.0f);
-            Debug.Log("<color=red> GAS PAD SCALE IS " + stationScale + "</color>");
+            //Debug.Log("<color=red> GAS PAD SCALE IS " + stationScale + "</color>");
 
             // NOW INSTEAD, SET THE BUILDING SCALE TO THE CURRENT SHIFT'S GAS PAD SCALE
             buildings[randBuild].transform.localScale = stationScale;
@@ -802,6 +827,46 @@ public class Game_Manager : MonoBehaviour {
 
         return padScale;
     }
+
+
+    private void PopulateAirships(int numShips)
+    {
+        
+        // Make the array the right size
+        Array.Resize(ref airShip, numShips+1);
+        Debug.Log("ARRAY SIZE IS " + airShip.Length);
+
+        // Start laneY at the airshipObject's yOffset, then let the loop increment
+        // No. Now, start laneY with the tallest building height, which I now check for,
+        // and add one height.
+        float laneY = tallestBuilding + airShipObject.airshipHeight;
+
+        for (int i = 0; i< numShips; i++)
+        {
+            // Start with the airship's yOffset. Place the first ship there..
+            // Here I use the yOffset from the MAIN prefab, rather than the instantiated ones
+            // Because, well... I haven't instantiated any yet
+
+            
+            
+            // Make this ship. Instantiating it will run its Start, which will place and rotate it
+            // After that, its animation event will restart it at a new rotation and position each time
+            airShip[i] = Instantiate(airShipObject);
+
+            // The x offset is the maxPadDistance (city radius)
+            float myX = (UnityEngine.Random.value * airshipRadius) - (airshipRadius / 2.0f);
+            // Start it at its height, but where it was placed by the airship's start
+            airShip[i].transform.position = new Vector3(
+                myX, 
+                laneY,
+                airShip[i].transform.position.z);
+
+            // Next, add the airshipHeight each time, so the next ship is one lane higher.
+            laneY += airShip[i].airshipHeight;
+        }
+    }
+
+
 
     private float HypotenuseDistance(Vector3 location)
     {

@@ -71,7 +71,7 @@ public class Pad_Manager : MonoBehaviour {
     private void OnEnable()
     {
         
-        Debug.Log("<color=black>         LIGHT COLOR = " + lightNumber + "</color>");
+        //Debug.Log("<color=black>         LIGHT COLOR = " + lightNumber + "</color>");
         // Here I need to get the MaterialPropertyBlo ck.
         mpb = new MaterialPropertyBlock();
         // Stupidly, since we're counting UP pads, but counting DOWN numbers, I have
@@ -112,7 +112,7 @@ public class Pad_Manager : MonoBehaviour {
     // And it passes the current nextPad number so we can put the right texture on
     public void LightBeam(bool flag, int padNum)
     {
-        Debug.Log("<color=black>         LIGHT COLOR = " + lightNumber + "</color>");
+        //Debug.Log("<color=black>         LIGHT COLOR = " + lightNumber + "</color>");
         // Here I need to get the MaterialPropertyBlo ck.
         mpb = new MaterialPropertyBlock();
         // Stupidly, since we're counting UP pads, but counting DOWN numbers, I have
