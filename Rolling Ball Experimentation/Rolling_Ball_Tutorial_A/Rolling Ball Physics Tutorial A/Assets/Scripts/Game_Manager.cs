@@ -831,15 +831,69 @@ public class Game_Manager : MonoBehaviour {
 
     private void PopulateAirships(int numShips)
     {
-        
+
+        // Instead of radially populating them, with each ship rising up one more to make room
+        // I will now instead create two lanes, one low, one high, and populate them
+        // in a cross-grid pattern.
+
+        Array.Resize(ref airShip, numShips+1);
+        Debug.Log("ARRAY SIZE IS " + airShip.Length);
+
+        // Start lane at the tallest buliding plus one airship height
+        float laneY = tallestBuilding + airShipObject.airshipHeight;
+
+        // Get the width between ships
+        float myXDistance = maxPadDistance / numShips;
+
+        // Start at one side of the city, which is half of maxPadDistance 
+        // Then add one half of a ship's distance
+        float myX = (maxPadDistance / -2.0f) + (myXDistance / 2.0f);
+
+        // Rotation is 0. If the ship is odd, it is 90 (down below)
+        float myYRotation = 0.0f;
+
+        for (int i = 0; i < numShips; i++)
+        {
+            airShip[i] = Instantiate(airShipObject);
+
+            if ( i % 2 == 0 ) // Even
+            {
+                myYRotation = 0.0f;
+                laneY = tallestBuilding + airShipObject.airshipHeight;
+                airShip[i].transform.position = new Vector3(
+                    myX,
+                    laneY,
+                    airShip[i].transform.position.z);
+            }
+            else
+            {
+                myYRotation = 90.0f;
+                laneY = tallestBuilding + ( airShipObject.airshipHeight * 2.0f );
+                airShip[i].transform.position = new Vector3(
+                    airShip[i].transform.position.x,
+                    laneY,
+                    myX);
+            }
+            
+            // Rotate ship
+            airShip[i].rotator.transform.eulerAngles = new Vector3(0.0f, myYRotation, 0.0f);
+
+            // Now increment myX the width of the city / numships for even grid distribution 
+            myX += myXDistance;
+            
+
+             
+        }
+
+        /*
         // Make the array the right size
         Array.Resize(ref airShip, numShips+1);
         Debug.Log("ARRAY SIZE IS " + airShip.Length);
 
         // Start laneY at the airshipObject's yOffset, then let the loop increment
-        // No. Now, start laneY with the tallest building height, which I now check for,
+        // No. Now, start laneY with the tallest building he ight, which I now check for,
         // and add one height.
-        float laneY = tallestBuilding + airShipObject.airshipHeight;
+        float laneY = tallestBuilding + airShipObject.airshipHeight; 
 
         for (int i = 0; i< numShips; i++)
         {
@@ -863,8 +917,9 @@ public class Game_Manager : MonoBehaviour {
 
             // Next, add the airshipHeight each time, so the next ship is one lane higher.
             laneY += airShip[i].airshipHeight;
-        }
+            */
     }
+
 
 
 

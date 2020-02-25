@@ -926,6 +926,13 @@ public class Taxi_Controller : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
+        // For now, hitting the airships does no damage
+        if ( other.gameObject.tag == "Airship")
+        {
+            return;
+        }
+
+
         float collisionEffect = other.relativeVelocity.magnitude;
         //Debug.Log("<color=white>COLLISION! " + collisionEffect + "</color>");
 

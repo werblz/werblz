@@ -12,7 +12,7 @@ public class Airship_Mover : MonoBehaviour {
     private float cityRadius = 500.0f;
 
     [SerializeField]
-    private GameObject rotator = null;
+    public GameObject rotator = null;
 
     public float yOffset = 390.0f;
 
@@ -37,7 +37,9 @@ public class Airship_Mover : MonoBehaviour {
         // Not using yOffset ecuase GameManager wants to place it vertically, so it can
         // set each ship in its own vertical lane
         //transform.localPosition = new Vector3(xOffset, 0.0f, 0.0f);
-        rotator.transform.eulerAngles = new Vector3(0.0f, Random.value * 360.0f, 0.0f);
+        
+        // For now, do not let the ships  rotate themselves
+        //rotator.transform.eulerAngles = new Vector3(0.0f, Random.value * 360.0f, 0.0f);
         enabled = true;
     }
 }
