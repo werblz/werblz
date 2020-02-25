@@ -856,9 +856,10 @@ public class Game_Manager : MonoBehaviour {
         {
             airShip[i] = Instantiate(airShipObject);
 
+            myYRotation = (float)i * 90.0f;
             if ( i % 2 == 0 ) // Even
             {
-                myYRotation = 0.0f;
+                //myYRotation = 0.0f;
                 laneY = tallestBuilding + airShipObject.airshipHeight;
                 airShip[i].transform.position = new Vector3(
                     myX,
@@ -867,7 +868,7 @@ public class Game_Manager : MonoBehaviour {
             }
             else
             {
-                myYRotation = 90.0f;
+                //myYRotation = 90.0f;
                 laneY = tallestBuilding + ( airShipObject.airshipHeight * 2.0f );
                 airShip[i].transform.position = new Vector3(
                     airShip[i].transform.position.x,

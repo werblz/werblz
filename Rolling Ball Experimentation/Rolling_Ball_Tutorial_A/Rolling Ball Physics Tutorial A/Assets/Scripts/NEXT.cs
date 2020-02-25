@@ -21,6 +21,33 @@ public class NEXT : MonoBehaviour
      * 
      
 
+
+    AIRSHIPS
+     - Make a collider box that stretches out the entire path of the airship animation, parented 
+       to each airship. When placing them, turn it on, start at LowestBuildingHeight (track that)
+       and if it collides, move it up a bit. Keep going until it doesn't collide. Then turn off
+       the collider. This will ensure ships at below the level of the tall buildings, causing
+       even more chaos!
+    -  Make collisions with airships do no damage (done) but DO take away from tip for 
+       jostling passengers. Make it known. (Audio "Ouch!")?
+    - Write a script that moves each airship randomly the animation timeline. I know this was 
+      done for GOT
+    - ALso make a collider for the sky sphere. When a ship hits it, trigger a script method that
+      scales the ship up by scaling the rotator Or the mesh?? This may not work. May be too difficult. 
+    - If that works, make eve ry ship hit Restart event if it leaves the collider.
+
+
+    POWERUPS
+    - Make powerups appear over random buildings.
+    - Collide with them and you get temporary bonuses, or small permanent ones.
+    - Temporary ones can set temporary flags, reset at Shift Over 
+
+
+
+    RADAR
+     - Make four crack images, each progressing (did that)
+     - Now add them to the radars, and make them come in progressively on the 25%s
+
     - DONE - Make home base. The base you start at but does nothing for you except fill you up 
       and fix your repairs for cheap. Landing back here at any time does nothing. 
       Perhaps it will adomonish you or something
