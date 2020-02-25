@@ -46,6 +46,7 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+*.cache
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -64,5 +65,6 @@ crashlytics-build.properties
 Rolling Ball Experimentation/Rolling_Ball_Tutorial_A/Rolling Ball Physics Tutorial A/Library/
 Rolling Ball Experimentation/Rolling_Ball_Tutorial_A/Rolling Ball Physics Tutorial A/Temp/
 Rolling Ball Experimentation/Rolling_Ball_Tutorial_A/Rolling Ball Physics Tutorial A/.vs/
+Rolling Ball Experimentation/Rolling_Ball_Tutorial_A/Rolling Ball Physics Tutorial A/.vs/Rolling Ball Physics Tutorial A/v15/
 Connections/Connections/Library/
 Enemy/Enemy/Library/
