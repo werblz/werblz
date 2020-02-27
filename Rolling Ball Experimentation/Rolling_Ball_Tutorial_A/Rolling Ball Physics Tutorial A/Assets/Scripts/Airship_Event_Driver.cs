@@ -27,7 +27,7 @@ public class Airship_Event_Driver : MonoBehaviour {
         anim = GetComponent<Animator>();
 
         // Random starts with a given speed, then ADDS a multipler on the same times the random num 0-3
-        anim.speed = 0.1f + (Random.value * 3.0f * 0.1f); // .01 is a good base. Now alter it by random
+        anim.speed = 2f + (Random.value * 3.0f * 2f); // .01 is a good base. Now alter it by random
 
     }
 
@@ -35,7 +35,7 @@ public class Airship_Event_Driver : MonoBehaviour {
 
     public void RestartAnim()
     {
-        anim.speed = (Random.value * 30.0f) * 0.01f; // .01 is a good base. Now alter it by random
+        anim.speed = 2f + (Random.value * 3.0f * 2f); // .01 is a good base. Now alter it by random
         mover.PlaceShip();
         anim.SetTrigger("Start");
         

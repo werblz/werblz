@@ -170,6 +170,7 @@ public class Game_Manager : MonoBehaviour {
     private float gridCellSize = 0.0f; // Will be the size of each building cell
 
     private float tallestBuilding = 0.0f;
+    private float shortestBuilding = 10000.0f;
 
     [Header("Game Behavior")]
     [SerializeField]
@@ -382,11 +383,16 @@ public class Game_Manager : MonoBehaviour {
                     {
                         tallestBuilding = heightCheck;
                     }
+                    if (heightCheck < shortestBuilding)
+                    {
+                        shortestBuilding = heightCheck;
+                    }
                     numBuildingsInGrid++; // Increase array index
                 }
             }
         }
-        Debug.Log("<color=blue*******************</color> HEIGHT IS " + tallestBuilding);
+        Debug.Log("<color=blue*******************</color> Tallest Building is " + tallestBuilding);
+        Debug.Log("<color=blue*******************</color> Shortest Building is " + shortestBuilding);
         Debug.Log("<color=yellow>********************</color>  NUMBER OF BUILDINGS MADE: " + numBuildingsInGrid);
         //Debug.Log("<color=red>******************* Coordinates of the middle-most building:</color>" + buildings[(int)numBuildingsInGrid / 2].transform.position);
     }
@@ -395,7 +401,7 @@ public class Game_Manager : MonoBehaviour {
     // coordinate of a four channel Texture2D. Then it returns the Vector3 PLUS one value for Y rotation, maiking it return a Vector 4
     private Vector4 TextureWiggle(Vector3 location)
     {
-        // First, get the 0-1 decimal length across array I'm populating, per x and y
+        // First, get the 0-1 decimal leng th across array I'm populating, per x and y
         float percentX = location.x / maxPadDistance + 0.5f; // decimal from 0-1 along the array side, then add .5 to offset it from corner
         float percentZ = location.z / maxPadDistance + 0.5f; // "
 
@@ -411,7 +417,7 @@ public class Game_Manager : MonoBehaviour {
         float nudgeX = pixelValue.r;
         // Now get the GREEN channel value, and nudge the buliding in the Z direction
         float nudgeY = pixelValue.g;
-        // Now get the BLUE channel value, and nudge the building in the Y direction (height)
+        // Now get the BLUE channel va lue, and nudge the building in the Y direction (height)
         float nudgeZ = pixelValue.b;
         // Now get the ALPHA channel value, and nudge the building in the Y direction (height)
         float nudgeRotY = pixelValue.a;
