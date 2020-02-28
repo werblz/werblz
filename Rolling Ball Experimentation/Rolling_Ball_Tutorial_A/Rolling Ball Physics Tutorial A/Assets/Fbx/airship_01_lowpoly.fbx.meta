@@ -4,12 +4,22 @@ ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Airship_One_Lowpoly
+    100004: Airship_One_Lowpoly_Phys
     400000: //RootNode
+    400002: Airship_One_Lowpoly
+    400004: Airship_One_Lowpoly_Phys
     2100000: lambert1
     2300000: //RootNode
+    2300002: Airship_One_Lowpoly
+    2300004: Airship_One_Lowpoly_Phys
     3300000: //RootNode
+    3300002: Airship_One_Lowpoly
+    3300004: Airship_One_Lowpoly_Phys
     4300000: polySurface1
     4300002: Airship_One_Lowpoly_All
+    4300004: Airship_One_Lowpoly_Phys
+    4300006: Airship_One_Lowpoly
     2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
