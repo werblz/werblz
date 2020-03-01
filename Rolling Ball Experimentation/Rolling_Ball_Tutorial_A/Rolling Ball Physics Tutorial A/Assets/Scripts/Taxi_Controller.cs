@@ -926,20 +926,39 @@ public class Taxi_Controller : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        // For now, hitting the airships does no damage
+
+        // How much collision?
+        float collisionEffect = other.relativeVelocity.magnitude;
+        //Debug.Log("<color=white>COLLISION! " + collisionEffect + "</color>");
+
+        // If enough, log it in the text object (which we aren't using anymore)
+        if (collisionEffect > 0.01f)
+        {
+            velocityText.text = collisionEffect.ToString();
+        }
+
+
+
+        // For now, hitting the airships does no damage, but DOES affect tip
         if ( other.gameObject.tag == "Airship")
         {
+            if (collisionEffect > minCollisionThreshold)
+            {
+                // Decrease tip for ANY collision at all. Later, multiply that by the amount of collision
+                gm.tip -= gm.tipDrain * collisionEffect;
+                if (gm.tip <= 0.0f)
+                {
+                    gm.tip = 0.0f;
+                }
+
+                // Also, no VFX if we collid e with an airship. They are bouncy
+
+            }
             return;
         }
 
 
-        float collisionEffect = other.relativeVelocity.magnitude;
-        //Debug.Log("<color=white>COLLISION! " + collisionEffect + "</color>");
 
-        if (collisionEffect > 0.01f)
-        {
-            velocityText.text = collisionEffect.ToString();            
-        }
 
         if (collisionEffect > minCollisionThreshold)
         {
