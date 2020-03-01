@@ -391,8 +391,8 @@ public class Game_Manager : MonoBehaviour {
                 }
             }
         }
-        Debug.Log("<color=blue*******************</color> Tallest Building is " + tallestBuilding);
-        Debug.Log("<color=blue*******************</color> Shortest Building is " + shortestBuilding);
+        Debug.Log("<color=blue>*******************</color> Tallest Building is " + tallestBuilding);
+        Debug.Log("<color=blue>*******************</color> Shortest Building is " + shortestBuilding);
         Debug.Log("<color=yellow>********************</color>  NUMBER OF BUILDINGS MADE: " + numBuildingsInGrid);
         //Debug.Log("<color=red>******************* Coordinates of the middle-most building:</color>" + buildings[(int)numBuildingsInGrid / 2].transform.position);
     }

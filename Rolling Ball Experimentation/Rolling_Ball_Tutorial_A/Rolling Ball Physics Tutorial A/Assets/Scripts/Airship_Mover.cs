@@ -21,7 +21,10 @@ public class Airship_Mover : MonoBehaviour {
     [SerializeField]
     public float airshipHeight = 10.0f;
 
-    // Use this for initialization..
+    [SerializeField]
+    public Animator anim = null;
+
+    // Use this for initialization...
     void Start () {
 
         PlaceShip();
@@ -41,5 +44,7 @@ public class Airship_Mover : MonoBehaviour {
         // For now, do not let the ships  rotate themselves
         //rotator.transform.eulerAngles = new Vector3(0.0f, Random.value * 360.0f, 0.0f);
         enabled = true;
+        anim.Play("Airship_Move_Z", -1, Random.value);
+
     }
 }
