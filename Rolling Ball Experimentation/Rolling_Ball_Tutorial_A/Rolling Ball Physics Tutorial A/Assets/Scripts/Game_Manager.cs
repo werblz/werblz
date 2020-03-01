@@ -9,60 +9,84 @@ public class Game_Manager : MonoBehaviour {
 
     [Header("Objects")]
 
+    [Tooltip("Landing Pad Prefab")]
     [SerializeField]
     private GameObject padObject = null;
 
+    [Tooltip("Building Mesh Array")]
     [SerializeField]
     private GameObject[] buildingObject = null;
 
+    [Tooltip("Service Station Prefab")]
     [SerializeField]
     private GameObject stationObject = null;
 
+    [Tooltip("Home Pad Prefab")]
     [SerializeField]
     private GameObject homeObject = null;
 
+    [Tooltip("Taxi Prefab")]
     [SerializeField]
     private Taxi_Controller taxi = null;
 
+    [Tooltip("Airship Prefab")]
     [SerializeField]
     private Airship_Mover airShipObject = null;
 
     private Airship_Mover[] airShip = null;
 
     [Header("City Setup")]
+
+    [Tooltip("How Many Landing Pads. This number is changed in code on a per-level basis. CHANGE THIS TO HIDEININSPECTOR!")]
     [SerializeField]
     public int numPads = 10;
 
+    [Tooltip("How Many Service Stations. This number may change in code per level. CHANGE THIS TO HIDEININSPECTOR?")]
     [SerializeField]
     public int numStations = 8;
 
+    [Tooltip("Maximum Distance Per Pad. This is used to determine the diameter of the city!")]
     [SerializeField]
     private float maxPadDistance = 500.0f;
+
+    [Tooltip("Minimum Distance Between Placing Pads. Not sure this code is working yet, but will.")]
     [SerializeField]
     private float minAllowableDistanceBetweenPads = 10.0f;
 
+    [Tooltip("Maximum Building Scale Around")]
     [SerializeField]
     private float maxBuildingXZScale = 5.0f;
+    [Tooltip("Maximum Variation of Building Scale Around")]
     [SerializeField]
     private float maxBuildingXZScaleOffset = 3.0f;
+    [Tooltip("Maximum Builiding Height Scale")]
     [SerializeField]
     private float maxBuildingYScale = 30.0f;
+    [Tooltip("Building Height Scale Offset (Minimum to allow)")]
     [SerializeField]
     private float maxBuildingYScaleOffset = 20.0f;
+    [Tooltip("Texture that determines Wiggle Variance. Multi-channel image that uses each channel to affect how city buildings are placed. There is a height map to 'draw' culsters of heights, etc.")]
     [SerializeField]
     private Texture2D layoutTexture = null;
+    [Tooltip("A multiplier into those side-sliding values supplied by the Layout Texture")]
     [SerializeField]
     private float layoutWiggleMultiplier = 1.0f;
+    [Tooltip("A multiplier into the height map, so buildings can be much taller if we change this number")]
     [SerializeField]
     private float layoutWiggleHeightMultiplier = 1.0f;
+    [Tooltip("Min building height")]
     [SerializeField]
     private float minBuildingHeight = 1.0f;
+    [Tooltip("Service Station scale. This used to change during gameplay but I opted to leave it constant for better 3D visualization.")]
     [SerializeField]
     private float gasPadScale = 5.0f;
+    [Tooltip("Landing Pad scale. This used to change during gameplay based on building scale but I opted to leave it constant for better 3D visualization.")]
     [SerializeField]
     private float landingPadScale = 10.0f;
+    [Tooltip("How many airships fly throug the city.")]
     [SerializeField]
     private int numAirships = 10;
+    [Tooltip("How wide to place airships. Should be half of city diameter.")]
     [SerializeField]
     private float airshipRadius = 250.0f;
 
@@ -75,27 +99,35 @@ public class Game_Manager : MonoBehaviour {
 
     [Header("Scoring")]
 
+    [Tooltip("Your current cash.")]
     [SerializeField]
     public float cash = 100.0f; // SAVE
 
+    [Tooltip("Current fare.")]
     [SerializeField]
     public float fare = 20.0f;
 
+    [Tooltip("Starting fare amount before distance multiplier is added")]
     [SerializeField]
     private float standardFare = 10.0f; // SAVE (upgrade?)
 
+    [Tooltip("Distance multiplier for fares. Farther = larger fare")]
     [SerializeField]
     public float fareDistanceMultiplier = 0.05f; // This is the multiplier for the distance between taxi and next target, for fare calculation
 
+    [Tooltip("How fast fare counts down from initial to 0")]
     [SerializeField]
     public float fareDrain = 0.005f; // SAVE (upgrade?)
 
+    [Tooltip("Current tip amount.")]
     [SerializeField]
     public float tip = 10.0f;
 
+    [Tooltip("Starting value of tip each fare")]
     [SerializeField]
     public float standardTip = 10.00f;
 
+    [Tooltip("How much tip drops per collision")]
     [SerializeField]
     public float tipDrain = 1.0f; // SAVE (upgrade?) Tip drain for now happens only due to collision
 
@@ -103,24 +135,33 @@ public class Game_Manager : MonoBehaviour {
     // THESE BOTH NOW WORK PER PHYSICS FRAME! THIS IS BAD!
     // MAKE THEM WORK BY time.deltaTime PER SECOND! That way I don't have to do TWO calculations
     // For different costs for gas at home and station
+    [Tooltip("Cost of gas on fillup")]
     [SerializeField]
     public float gasCost = 0.04f; // SAVE (upgrade?)
+    [Tooltip("Cost of gas on fillup at home base (is cheaper)")]
     [SerializeField]
     public float homePadGasCost = 0.02f; // SAVE (upgrade?) 20 if filled up during NextShift at half cost per "litre"
+    [Tooltip("How fast gas fills up on service station.")]
     [SerializeField]
     public float gasFillRate = 2.0f; // SAVE
+    [Tooltip("How fast gas fills up at home base. (Should be faster)")]
     [SerializeField]
     public float homePadGasFillRate = 4.0f;
 
+    [Tooltip("How much it costs to repair damage at Service Station (on each Fixed Update)")]
     [SerializeField]
     public float damageRepairCost = 0.02f; // SAVE (upgrade?)
+    [Tooltip("How much it costs to repair damage at Home Base (on each Fixed Update)")]
     [SerializeField]
     public float homePadDamageRepairCost = 0.01f; // SAVE (upgrade?) Half of damage at gas pad
+    [Tooltip("How fast damage is repaired at Service Station")]
     [SerializeField]
     public float damageRepairRate = 0.1f; // SAVE
+    [Tooltip("How fast damage is repaired at Home Base")]
     [SerializeField]
     public float homePadDamageRepairRate = 0.2f; // SAVE
 
+    [Tooltip("How much money to deduct on a crash.")]
     [SerializeField] 
     public float crashDeductible = 500.0f; // SAVE
 
@@ -135,32 +176,45 @@ public class Game_Manager : MonoBehaviour {
     [HideInInspector]
     public int numPadsLandedOn = 0;
 
+    [Tooltip("Parent object for the Summary Analysis. For turning on and off.")]
     public GameObject summaryTextParent = null;
+    [Tooltip("Cash TextMeshPro object")]
     public TextMeshPro cashText = null;
+    [Tooltip("Fare TextMeshPro object")]
     public TextMeshPro fareText = null;
+    [Tooltip("Tip TextMeshPro object")]
     public TextMeshPro tipText = null;
 
+    [Tooltip("Summary TextMeshPro text object")]
     [SerializeField]
     private TextMeshPro summaryText = null;
+    [Tooltip("Summary Win Column TextMeshPro object")]
     [SerializeField]
     private TextMeshPro summaryWinsNumbersText = null;
+    [Tooltip("Summary Losses Column TextMeshPro object")]
     [SerializeField]
     private TextMeshPro summaryLossesNumbersText = null;
+    [Tooltip("Summary Cash Total TextMeshPro object")]
     [SerializeField]
     private TextMeshPro summaryCashText = null;
 
     // These are to keep track of stats for this shift only
     private float faresThisShift = 0.0f;
     private float tipsThisShift = 0.0f;
+    [Tooltip("How much you've paid in gas this shift only. (Controlled by code)")]
     public float gasCostThisShift = 0.0f; // Public because Taxi has to write to it
+    [Tooltip("How much you've paid in repairs this shift only. (Controlled by code)")]
     public float repairsCostThisShift = 0.0f; // Public becuase Taxi has to write to it
+    [Tooltip("How much gas you paid at Home Base this shift only. (Controlled by code)")]
     public float gasCostHome = 0.0f;
+    [Tooltip("How much you paid in repairs at Home Base this shift only. (Controleld by code)")]
     public float repairsCostHome = 0.0f;
     private int numPadsThisShift = 0;
 
     [HideInInspector]
     public int nextPad = 0;
 
+    [Tooltip("How many buildings were created.")]
     public int numBuildingsInGrid = 0;
 
     private float buildingBuffer = 0.0f; // Buffer between max building sizes
@@ -174,15 +228,21 @@ public class Game_Manager : MonoBehaviour {
 
     [Header("Game Behavior")]
     [SerializeField]
+    [Tooltip("A Bool. Is UI up?")]
     public bool uiIsUp = false; // This is for when I put up a UI panel. I need my non-UI update loops to just RETURN so I can perform UI panel work
+    [Tooltip("Radar Panel prefab")]
     [SerializeField]
     private GameObject radarPanel = null;
+    [Tooltip("Panel Controller object")]
     [SerializeField]
     public UI_Panel_Controller panelController = null;
+    [Tooltip("UI Panel prefab")]
     [SerializeField]
     public GameObject panel = null;
+    [Tooltip("UI Panel Text TextMeshPro object")]
     [SerializeField]
     public TextMeshPro panelText = null;
+    [Tooltip("Title Screen prefab")]
     [SerializeField]
     public GameObject titleScreen = null;
 
@@ -197,27 +257,34 @@ public class Game_Manager : MonoBehaviour {
     public bool hasControl = false;
 
     [Header("Upgrades")]
+    [Tooltip("Are there any upgrades available to purchase?")]
     [SerializeField]
     public bool upgradesAvailable = false;
 
+    [Tooltip("Array of Upgrade prefabs")]
     [SerializeField]
     public GameObject[] upgrades = null;
 
+    [Tooltip("Array of Dialog prefabs to show at end of shift.")]
     [SerializeField]
     public GameObject[] shiftDialogs = null;
 
+    [Tooltip("Crash Dialog prefab")]
     [SerializeField]
     public GameObject crashDialog = null;
 
     private GameObject[] shiftDialogInstances = null;
 
     [Header("Debug Stuff")]
+    [Tooltip("Are we debugging?")]
     [SerializeField]
     public bool debugOn = false;
+    [Tooltip("How many pickups during Debug")]
     [SerializeField]
     private int numDebugPads = 2;
 
     // Game stats
+    [Tooltip("What shift are we on?")]
     [HideInInspector]
     public int shift = 1;
 
