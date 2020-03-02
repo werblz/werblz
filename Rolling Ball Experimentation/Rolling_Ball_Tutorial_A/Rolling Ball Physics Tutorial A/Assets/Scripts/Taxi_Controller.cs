@@ -16,8 +16,13 @@ public class Taxi_Controller : MonoBehaviour
 
     [Header("Game Manager")]
 
+    [Tooltip("Need reference to Game Manager. Nothing gets done otherwise.")]
     [SerializeField]
     private Game_Manager gm = null;
+
+    [Tooltip("Need reference for Radar Manager to tell it to show cracked glass")]
+    [SerializeField]
+    private Radar_Manager rm = null;
 
     [Header("Movement")]
 
@@ -834,7 +839,7 @@ public class Taxi_Controller : MonoBehaviour
                 damage -= gm.damageRepairRate;
                 gm.cash -= gm.damageRepairCost;
                 gm.repairsCostThisShift += gm.damageRepairCost; // This is on an update basis. Each fixed frame.
-                
+                ShowRadarCrack(); // Refresh radar, which should now be seen miraculously repairing itself
             }
             
             
@@ -858,6 +863,7 @@ public class Taxi_Controller : MonoBehaviour
                 damage -= gm.homePadDamageRepairRate;
                 gm.cash -= gm.homePadDamageRepairCost;
                 gm.repairsCostHome += gm.homePadDamageRepairCost; // This is on an update basis. Each fixed frame.
+                ShowRadarCrack(); // Refresh radar, which should now be seen miraculously repairing itself
             }
 
 
@@ -967,6 +973,7 @@ public class Taxi_Controller : MonoBehaviour
             // minCollisionThreashold can then be upped later, as you get better armor for your car as upgrades
             damage += ( collisionEffect - minCollisionThreshold);
 
+
             //Debug.Log("<color=red>COLLISION! " + ( collisionEffect - minCollisionThreshold ) + " for accumulated damage of " + damage + ".</color>");
 
             // Decrease tip for ANY collision at all. Later, multiply that by the amount of collision
@@ -1006,7 +1013,7 @@ public class Taxi_Controller : MonoBehaviour
             Collider sphereCollider = sphere.GetComponent(typeof(Collider)) as Collider; // Get its collider so we can
             sphereCollider.enabled = false; // turn it off, otherwise it will be a collider and wow.
             sphere.transform.position = other.contacts[0].point; // Move it to where the contact happened
-            */
+             */
 
         }
 
@@ -1016,7 +1023,12 @@ public class Taxi_Controller : MonoBehaviour
             damage = maxDamage;
             LoseControl();
         }
-            
+
+        // I had this higher up in code, but it was causing problems, probably because
+        // it was trying to show sprites in an array PAST maximum damage, because I had not
+        // yet capped max damage right above here.
+        ShowRadarCrack();
+        //rm.CrackRadar();
 
         if (other.gameObject.tag == "GasStation")
         {
@@ -1074,6 +1086,20 @@ public class Taxi_Controller : MonoBehaviour
 
 
     }
+
+
+    // Why the hell would you have a method here that does ONE thing: Calls a method on
+    // the Radar Manager?
+    // Because it eliminates the need for Game Manager to hold its own reference to 
+    // Radar Manager, and since it already references in the Taxi, just call it on the Taxi Controller
+    // which in turn calls it on the Radar Manager
+    public void ShowRadarCrack()
+    {
+        rm.CrackRadar();
+
+    }
+
+
 
     // !!!! HERE
     // Now that I have velocity checked, I want to set it up so if it collides with anything, and the velocity is > X, it does something bad.

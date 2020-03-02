@@ -233,6 +233,22 @@ public class Radar_Manager : MonoBehaviour {
         float fillPercentage = Mathf.Abs(tc.gas / tc.maxGas);
         gasGaugeImage.fillAmount = fillPercentage * 0.75f;
 
+        
+
+   
+
+        
+
+        
+
+
+
+        IconsUp();
+    }
+
+
+    public void CrackRadar()
+    {
         // Update damage gauge
         float damagePercentage = Mathf.Abs(tc.damage / tc.maxDamage);
         damageImage.fillAmount = damagePercentage * 0.165f;
@@ -246,7 +262,7 @@ public class Radar_Manager : MonoBehaviour {
         // to change sprites, but keep 4 up there. This way 4 is max damage, but you keep flying
         // for ONE MORE damage pip
         float damageStepped = (int)(damagePercentage * crackSprites.Length);
-        if ( damageStepped > crackSprites.Length )
+        if (damageStepped > crackSprites.Length)
         {
             damageStepped = crackSprites.Length;
         }
@@ -256,24 +272,12 @@ public class Radar_Manager : MonoBehaviour {
             " which uses SPRITE " + crackSprites[(int)damageStepped] + "</color>");
         */
 
-        /* DEPRECATED. This used a material property block, and the alpha of a sprite material
-        Vector4 crackColor = new Vector4(1.0f, 1.0f, 1.0f, damageStepped);;
-        //mpb.SetColor( "_Color", crackColor );
-        */
-
-        
         for (int i = 0; i < crackSpriteRenderers.Length; i++)
         {
             crackSpriteRenderers[i].sprite = crackSprites[(int)damageStepped];
-            Debug.Log("<color=blue> Sprite is " + crackSprites[(int)damageStepped].name + "</color>");
+            //Debug.Log("<color=blue> Sprite is " + crackSprites[(int)damageStepped].name + "</color>");
         }
-        
-
-
-
-        IconsUp();
     }
-
 
 
 
