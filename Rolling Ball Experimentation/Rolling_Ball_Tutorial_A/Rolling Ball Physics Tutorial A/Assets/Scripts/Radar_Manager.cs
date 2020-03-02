@@ -30,10 +30,21 @@ public class Radar_Manager : MonoBehaviour {
     [SerializeField]
     private Image damageImage = null;
 
-    // The following are for the cracked radar
+    // The following are for the cracked radar. THIS SYSTEM IS ABOUT TO BE DEPRECATED!
+    /*
     [SerializeField]
-    private SpriteRenderer[] crackedRadarSprite = null;
+    private SpriteRenderer[] crackSpriteRenderer = null;
     private MaterialPropertyBlock mpb = null;
+    */
+
+    // IN FAVOR OF THIS ONE:
+    [Tooltip("Sprite Renderer object that holds the crack sprite image")]
+    [SerializeField]
+    private SpriteRenderer[] crackSpriteRenderers = null;
+
+    [Tooltip("Sprite images")]
+    [SerializeField]
+    private Sprite[] crackSprites = null;
 
     [SerializeField]
     private Taxi_Controller taxi = null;
@@ -227,17 +238,38 @@ public class Radar_Manager : MonoBehaviour {
         damageImage.fillAmount = damagePercentage * 0.165f;
 
         // Update the glass crack overlay
-        float damageStepped = (int)(damagePercentage * 4.0f) / 4.0f;
-
-        Vector4 crackColor = new Vector4(1.0f, 1.0f, 1.0f, damageStepped);
-        //mpb.SetColor( "_Color", crackColor );
-        //crackedRadarSprite.SetPropertyBlock(mpb); ;
-
-        for (int i = 0; i < crackedRadarSprite.Length; i++)
+        // Get the damage, stepped by dividing by 5
+        // 0 = no damage, 1-4 = increasing damage. 4 is max
+        // So take damagePercentage, mult by 5. (0-1 becomes 0-4)
+        // But this gauges to howver many sprites you put in the array. I now have 5 sprites.
+        // 0 is no damage. 1,2,3,4 are incremental damage, then I want the final damage NOT 
+        // to change sprites, but keep 4 up there. This way 4 is max damage, but you keep flying
+        // for ONE MORE damage pip
+        float damageStepped = (int)(damagePercentage * crackSprites.Length);
+        if ( damageStepped > crackSprites.Length )
         {
-            crackedRadarSprite[i].color = crackColor;
+            damageStepped = crackSprites.Length;
+        }
+        //Debug.Log("<color=red>**********DAMAGE DAMAGE DAMAGE - " + damageStepped + "</color>");
+        /*
+        Debug.Log("<color=red>**********DAMAGE DAMAGE DAMAGE - " + damageStepped +
+            " which uses SPRITE " + crackSprites[(int)damageStepped] + "</color>");
+        */
+
+        /* DEPRECATED. This used a material property block, and the alpha of a sprite material
+        Vector4 crackColor = new Vector4(1.0f, 1.0f, 1.0f, damageStepped);;
+        //mpb.SetColor( "_Color", crackColor );
+        */
+
+        
+        for (int i = 0; i < crackSpriteRenderers.Length; i++)
+        {
+            crackSpriteRenderers[i].sprite = crackSprites[(int)damageStepped];
+            Debug.Log("<color=blue> Sprite is " + crackSprites[(int)damageStepped].name + "</color>");
         }
         
+
+
 
         IconsUp();
     }
